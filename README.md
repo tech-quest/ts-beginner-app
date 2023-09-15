@@ -1,4 +1,4 @@
-# 学習用教材: メモアプリ
+# 入門者向けアプリ
 
 ## URLs
 - [アプリケーション: https://localhost:3000/](https://localhost:3000/)
