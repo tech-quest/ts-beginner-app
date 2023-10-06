@@ -29,7 +29,7 @@ const prisma = initPrisma();
 // APIのURL http://localhost:8000/memos
 // 作成が完了したら http://localhost:3000 にアクセスして確認してみましょう！
 app.get('/memos', async (req, res) => {
-  const memos = await prisma.memo.findMany();
+  const memos = await prisma.memo.findMany({ orderBy: { createdAt: 'desc' } });
 
   res.json({ data: memos });
 });
@@ -45,7 +45,7 @@ app.get('/memos/detail/:id', async (req, res) => {
   }
 
   const memo = await prisma.memo.findUnique({ where: { id } });
-  if (!memo) {
+  if (memo === null) {
     res.status(404).json({ error: { message: 'メモが見つかりませんでした' } });
     return;
   }
@@ -58,12 +58,12 @@ app.get('/memos/detail/:id', async (req, res) => {
 app.post('/memos/create', async (req, res) => {
   const { title, content } = req.body;
 
-  if (typeof title !== 'string' || !title) {
+  if (title === '') {
     res.status(400).json({ error: { message: 'タイトルまたは内容が未入力です' } });
     return;
   }
 
-  if (typeof content !== 'string' || !content) {
+  if (content === '') {
     res.status(400).json({ error: { message: 'タイトルまたは内容が未入力です' } });
     return;
   }
